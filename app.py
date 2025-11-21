@@ -9,7 +9,7 @@ app = Flask(__name__)
 # Permitir CORS para Flutter Web y desde el dominio de Render
 # Se mantiene wildcard para desarrollo local pero añadimos explícitamente
 # el dominio de Render para mayor claridad.
-CORS(app, resources={r"/*": {"origins": ["https://online-xe99.onrender.com", "*"]}})
+CORS(app, resources={r"/*": {"origins": ["https://online-xe99.onrender.com"]}})
 
 
 @app.route('/', methods=['GET'])
