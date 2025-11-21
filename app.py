@@ -6,8 +6,10 @@ from io import BytesIO
 import os
 
 app = Flask(__name__)
-# Permitir CORS para Flutter Web
-CORS(app, resources={r"/*": {"origins": "*"}})
+# Permitir CORS para Flutter Web y desde el dominio de Render
+# Se mantiene wildcard para desarrollo local pero añadimos explícitamente
+# el dominio de Render para mayor claridad.
+CORS(app, resources={r"/*": {"origins": ["https://online-xe99.onrender.com", "*"]}})
 
 
 @app.route('/', methods=['GET'])
@@ -55,4 +57,9 @@ def health():
     return {'status': 'OK'}, 200
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    # Usar el puerto provisto por el entorno (Render usa $PORT)
+    port = int(os.environ.get('PORT', 5000))
+    # Activar debug sólo si FLASK_DEBUG está establecido
+    debug_env = os.environ.get('FLASK_DEBUG', 'False')
+    debug = str(debug_env).lower() in ('1', 'true', 'yes')
+    app.run(host='0.0.0.0', port=port, debug=debug)
